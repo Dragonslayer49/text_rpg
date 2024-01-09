@@ -1,5 +1,7 @@
 import random
 
+
+#test
 # masz małego
 class Character:
     def __init__(self, name, characterClass):
