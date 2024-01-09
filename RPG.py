@@ -1,7 +1,9 @@
 import random
 import Character
 import Enemy
-#komentarz se jest tu
+
+
+# komentarz se jest tu
 
 def enemyLib(filename):
     enemies = []
@@ -73,7 +75,7 @@ class StartingArea:
                 case "1":
                     self.walk()
                 case "Inventory":
-                    # dodac ekwipunek
+                    player.show_weapon()
                     break
                 case "3":
                     break
@@ -122,6 +124,11 @@ class StartingArea:
             enemy.showHP()
             if enemy.health < 1:
                 print("you defeated", enemy.species)
+                player.loot_enemy()
+                print("Do you want to use a health potion? (Y/N): ")
+                choice = input().lower()
+                if choice == "y":
+                    player.use_health_potion()
                 break
             print(enemy.species, " attacks you")
             player.showHP()
