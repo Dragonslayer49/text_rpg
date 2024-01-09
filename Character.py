@@ -1,6 +1,6 @@
 import random
 
-
+#masz małego
 class Character:
     def __init__(self, name, characterClass):
         self.name = name
