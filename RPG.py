@@ -1,7 +1,7 @@
 import random
 import Character
 import Enemy
-
+#komentarz se jest tu
 
 def enemyLib(filename):
     enemies = []
