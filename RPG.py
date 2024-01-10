@@ -106,14 +106,14 @@ class StartingArea:
 
         enemies = enemyLib("monsters.txt")
         enemy = random.choice(enemies)
-        print("you see a ", enemy, " in the distance")
+        print("you see a ", enemy.species, " in the distance")
         print("1-fight him")
         print("2-try to sneak past")
         choice = input()
         if choice == "2":
             success = random.randint(1, 10)
             if success > 1:  # potem zmienic zeby byla szansa na atak przeciwnika
-                print("you successfully evaded ", enemy)
+                print("you successfully evaded ", enemy.species)
         elif choice == "1":
             self.fight(enemy)
 
