@@ -84,7 +84,9 @@ class Character:
         loot_chance = random.randint(1, 100)
         if loot_chance <= 50:
             new_weapon = self.loot_item("weapon")
-            self.ask_equip_weapon(new_weapon)
+            if new_weapon:
+                print(f"You found a {new_weapon['type']} with {new_weapon['attack']} attack!")
+                self.ask_equip_weapon(new_weapon)
         elif loot_chance <= 80:
             self.loot_health_potion()
         else:
@@ -108,13 +110,18 @@ class Character:
             ],
         }
 
-        chosen_item = random.choice(items.get(item_type, []))
-        print(f"You found a {chosen_item['type']} with {chosen_item['attack']} attack!")
-        return chosen_item
+        chosen_item_list = items.get(item_type, [])
+        if chosen_item_list:
+            chosen_item = random.choice(chosen_item_list)
+            print(f"You found a {chosen_item['type']} with {chosen_item['attack']} attack!")
+            return chosen_item
+        else:
+            print(f"No {item_type} found.")
+            return None
 
     def loot_health_potion(self):
         print("You found a health potion!")
-        self.inventory["health_potions"] += 1
+        self.inventory["health_potion"] += 1
 
     def add_weapon_to_inventory(self, new_weapon):
         current_weapon = self.inventory["weapon"]
@@ -141,9 +148,9 @@ class Character:
             print("You chose not to equip the new weapon.")
 
     def use_health_potion(self):
-        if self.inventory["health_potions"] > 0:
+        if self.inventory["health_potion"] > 0:
             self.health += 20
-            self.inventory["health_potions"] -= 1
+            self.inventory["health_potion"] -= 1
             print(f"You have used a health potion. Current health: {self.health}")
         else:
             print("You don't have any health potions left.")

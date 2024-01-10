@@ -11,8 +11,8 @@ def enemyLib(filename):
         lines = file.readlines()
         for line in lines:
             species, health, attackPower = line.strip().split(',')
-        enemy = Enemy.Enemy(species, health, attackPower)
-        enemies.append(enemy)
+            enemy = Enemy.Enemy(species, health, attackPower)
+            enemies.append(enemy)
     return enemies
 
 
@@ -68,15 +68,16 @@ class StartingArea:
             print("\nYou are currently at:", self.current_location)
             print("Available paths:", ", ".join(self.locations[self.current_location]))
             print("")
-            print("write inventory to Check Inventory")
+            print("write Inventory to Check Inventory")
             print("q to Quit")
             choice = input()
             match choice:
                 case "1":
                     self.walk()
+                    break
                 case "Inventory":
                     player.show_weapon()
-                    break
+
                 case "3":
                     break
 
