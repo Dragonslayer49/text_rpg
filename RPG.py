@@ -3,7 +3,6 @@ import Character
 import Enemy
 
 
-#test
 # komentarz se jest tu
 
 def enemyLib(filename):
