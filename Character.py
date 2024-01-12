@@ -47,10 +47,23 @@ class Character:
 
     def show_weapon(self):
         weapon = self.inventory["weapon"]
+        armor = self.inventory["armor"]
+
         if weapon:
-            print(f"{Fore.BLUE}Weapon: Type: {weapon['type']}, Name: {weapon['name']} Attack: {weapon['attack']}")
+            if "name" in weapon:
+                print(f"{Fore.BLUE}Weapon: Type: {weapon['type']}, Name: {weapon['name']} Attack: {weapon['attack']}")
+            else:
+                print(f"{Fore.BLUE}Weapon: Type: {weapon['type']} Attack: {weapon['attack']}")
         else:
             print(f"{Fore.BLUE}No weapon equipped")
+
+        if armor:
+            if "name" in armor:
+                print(f"{Fore.GREEN}Armor: Type: {armor['type']}, Name: {armor['name']} Defense: {armor['defense']}")
+            else:
+                print(f"{Fore.GREEN}Armor: Type: {armor['type']} Defense: {armor['defense']}")
+        else:
+            print(f"{Fore.GREEN}No armor equipped")
 
     def Getexp(self, exp):
         self.exp += exp
