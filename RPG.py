@@ -26,9 +26,9 @@ class StartingArea:
         self.player = player
         self.current_location = "Entrance"
         self.locations = {
-            "Entrance": ["North Path", "South Path"],
-            "North Path": ["Entrance", "Cave Entrance"],
-            "South Path": ["Entrance", "River"],
+            "Entrance":   [['You find yourself at an entrance to the forest'], ["North Path", "South Path"]],
+            "North Path": [['While walking you see a cave'], ["cave", "North"]],
+            "South Path": [['You see a river'], ["river", "South"]],
 
         }
         self.tutorial_location = "house"
@@ -65,12 +65,16 @@ class StartingArea:
 
     def navigate(self):
         while player.isAlive():
-            print("\nYou are currently at:", self.current_location)
-            print("Available paths:", ", ".join(self.locations[self.current_location]))
+            available_paths = self.locations[self.current_location][1]
+            print("".join(self.locations[self.current_location][0]))
+            print("Available paths:", ", ".join(self.locations[self.current_location][1]))
             print("")
             print("write inventory to Check Inventory")
             print("q to Quit")
             choice = input()
+            if choice in available_paths:
+                self.current_location = choice
+                self.handle_event()
             match choice:
                 case "1":
                     self.walk()
@@ -83,17 +87,6 @@ class StartingArea:
             if not player.isAlive():
                 print("Game Over! ")
                 break
-
-    def walk(self):
-        available_paths = self.locations[self.current_location]
-        print("Available paths:", ", ".join(available_paths))
-        direction = input("Choose a path to walk: ")
-
-        if direction in available_paths:
-            self.current_location = direction
-            self.handle_event()
-        else:
-            print("Invalid path. Try again.")
 
     def handle_event(self):
         event = random.randint(1, 10)
