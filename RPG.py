@@ -1,6 +1,7 @@
 import random
 import Character
 import Enemy
+from colorama import init, Fore
 
 
 # komentarz se jest tu
@@ -11,13 +12,13 @@ def enemyLib(filename):
         lines = file.readlines()
         for line in lines:
             species, health, attackPower = line.strip().split(',')
-        enemy = Enemy.Enemy(species, health, attackPower)
-        enemies.append(enemy)
+            enemy = Enemy.Enemy(species, health, attackPower)
+            enemies.append(enemy)
     return enemies
 
 
-name = input("write your name")
-chosingC = input("choose your class:1-Knight 2-Mage 3-Archer")
+name = input(f"{Fore.CYAN}write your name:  ")
+chosingC = input(f"{Fore.CYAN}choose your class:1-Knight 2-Mage 3-Archer ")
 player = Character.Character(name, chosingC)
 
 
@@ -26,9 +27,9 @@ class StartingArea:
         self.player = player
         self.current_location = "Entrance"
         self.locations = {
-            "Entrance":   [['You find yourself at an entrance to the forest'], ["North Path", "South Path"]],
-            "North Path": [['While walking you see a cave'], ["cave", "North"]],
-            "South Path": [['You see a river'], ["river", "South"]],
+            "Entrance": ["North Path", "South Path"],
+            "North Path": ["Entrance", "Cave Entrance"],
+            "South Path": ["Entrance", "River"],
 
         }
         self.tutorial_location = "house"
@@ -37,26 +38,26 @@ class StartingArea:
         }
 
     def tutorial(self):
-        choice = input("would you like to do a tutorial? Y/N")
+        choice = input(f"{Fore.CYAN}would you like to do a tutorial? Y/N")
         if choice == "Y":
             enemies = enemyLib("monsters.txt")
             enemy = random.choice(enemies)
-            print("You find yourself at a village, You see a smoke in the distance")
-            print("1-check out the smoke")
-            print("2-rest at your house")
-            print("3-go to the forest")
+            print(f"{Fore.GREEN}You find yourself at a village, You see a smoke in the distance")
+            print(f"{Fore.CYAN}1-check out the smoke")
+            print(f"{Fore.LIGHTGREEN_EX}2-rest at your house")
+            print(f"{Fore.CYAN}3-go to the forest")
             choice = input()
             match choice:
                 case "1":
-                    print("you see soldiers attacking a nearby village")
-                    print("while you looked at the soldiers one noticed you and started going your way")
-                    print("1-prepare for battle")
-                    print("2-run away")
+                    print(f"{Fore.GREEN}you see soldiers attacking a nearby village")
+                    print(f"{Fore.GREEN}while you looked at the soldiers one noticed you and started going your way")
+                    print(f"{Fore.RED}1-prepare for battle")
+                    print(f"{Fore.YELLOW}2-run away")
                     choice = input()
                     if choice == "1":
                         self.fight(enemy)
                 case "2":
-                    print("while resting a soldier went into you house with a sword in his hand")
+                    print(f"{Fore.GREEN}while resting a soldier went into you house with a sword in his hand")
                 case "3":
                     print()
 
@@ -69,8 +70,8 @@ class StartingArea:
             print("".join(self.locations[self.current_location][0]))
             print("Available paths:", ", ".join(self.locations[self.current_location][1]))
             print("")
-            print("write inventory to Check Inventory")
-            print("q to Quit")
+            print(f"{Fore.BLUE}write Inventory to Check Inventory")
+            print(f"{Fore.YELLOW}q to Quit")
             choice = input()
             if choice in available_paths:
                 self.current_location = choice
@@ -80,12 +81,12 @@ class StartingArea:
                     self.walk()
                 case "Inventory":
                     player.show_weapon()
-                    break
+
                 case "3":
                     break
 
             if not player.isAlive():
-                print("Game Over! ")
+                print(f"{Fore.RED}Game Over! ")
                 break
 
     def handle_event(self):
@@ -93,42 +94,42 @@ class StartingArea:
         if event > 0:
             self.encounter()
         else:
-            print("you walked without problems.")
+            print(f"{Fore.BLUE}you walked without problems.")
 
     def encounter(self):
 
         enemies = enemyLib("monsters.txt")
         enemy = random.choice(enemies)
-        print("you see a ", enemy.species, " in the distance")
-        print("1-fight him")
-        print("2-try to sneak past")
+        print(f"{Fore.BLUE}you see a ", enemy.species, " in the distance")
+        print(f"{Fore.YELLOW}1-fight him")
+        print(f"{Fore.BLUE}2-try to sneak past")
         choice = input()
         if choice == "2":
             success = random.randint(1, 10)
             if success > 1:  # potem zmienic zeby byla szansa na atak przeciwnika
-                print("you successfully evaded ", enemy.species)
+                print(f"{Fore.BLUE}you successfully evaded ", enemy.species)
         elif choice == "1":
             self.fight(enemy)
 
     def fight(self, enemy):
         while player.isAlive() & enemy.isAlive():
-            print("you attack", enemy.species)
+            print(f"{Fore.LIGHTRED_EX}you attack", enemy.species)
             player.attack(enemy)
             enemy.showHP()
             if enemy.health < 1:
-                print("you defeated", enemy.species)
+                print(f"{Fore.YELLOW}you defeated", enemy.species)
                 player.loot_enemy()
-                print("Do you want to use a health potion? (Y/N): ")
+                print(f"{Fore.YELLOW}Do you want to use a health potion? (Y/N): ")
                 choice = input().lower()
                 if choice == "y":
                     player.use_health_potion()
                 break
-            print(enemy.species, " attacks you")
+            print(enemy.species, f"{Fore.RED} attacks you")
             player.showHP()
             enemy.attack(player)
 
         if not player.isAlive():
-            print("Game Over! You have been defeated.")
+            print(f"{Fore.RED}Game Over! You have been defeated.")
         else:
             self.navigate()
 
