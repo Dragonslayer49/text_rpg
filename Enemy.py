@@ -1,3 +1,4 @@
+from colorama import Fore, Style
 class Enemy:
     def __init__(self, species, health, attackPower):
         self.species = species
@@ -8,7 +9,7 @@ class Enemy:
         self.health -= damage
 
     def showHP(self):
-        print(f"{self.species} has: {self.health} HP left")
+        print(f"{Fore.RED} {self.species} has: {self.health} HP left {Style.RESET_ALL}")
 
     def attack(self, player):
         player.takeDamage(self.attackPower)

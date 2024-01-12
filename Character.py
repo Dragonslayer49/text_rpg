@@ -1,5 +1,7 @@
 import random
+from colorama import Fore, Style
 
+from rich.console import Console
 
 #test
 # masz małego
@@ -45,9 +47,9 @@ class Character:
     def show_weapon(self):
         weapon = self.inventory["weapon"]
         if weapon:
-            print(f"Weapon: Type: {weapon['type']}, Attack: {weapon['attack']}")
+            print(f"{Fore.BLUE}Weapon: Type: {weapon['type']}, Attack: {weapon['attack']}")
         else:
-            print("No weapon equipped")
+            print(f"{Fore.BLUE}No weapon equipped")
 
     def Getexp(self, exp):
         self.exp += exp
