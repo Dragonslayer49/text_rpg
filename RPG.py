@@ -24,7 +24,6 @@ def enemyLib(filename):
     return enemies
 
 
-
 name = input(f"{Fore.CYAN}write your name:  ")
 chosingC = input(f"{Fore.CYAN}choose your class:1-Knight 2-Mage 3-Archer ")
 player = Character.Character(name, chosingC)
@@ -32,9 +31,9 @@ player = Character.Character(name, chosingC)
 
 class StartingArea:
     def __init__(self):
-        pygame.mixer.music.load("background.wav.wav")
-        pygame.mixer.music.set_volume(0.4)
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.music.load("background.wav.wav")
+        # pygame.mixer.music.set_volume(0.4)
+        # pygame.mixer.music.play(-1)
         self.player = player
         self.current_location = "Entrance"
         self.locations = {
@@ -62,6 +61,14 @@ class StartingArea:
     def navigate(self):
         numerek = 0
         while player.isAlive():
+            if self.current_location == "Cave Entrance":
+                choice = input("would you like to enter this cave? Y/N")
+                match choice:
+                    case "Y":
+                        self.cave()
+                    case "N":
+                        break
+
             available_paths = self.locations[self.current_location][1]
             if numerek == 0:
                 print("\n".join(self.locations[self.current_location][0]))
@@ -151,16 +158,45 @@ class StartingArea:
                     "chest\nunfortunately you didnt notice that the chest wast tied to the wall and you trip")
                 print("big monster wakes up")
                 self.bossfight()
+            case '2':
+                print("Monster got hit with your sneak attack")
+                self.bossfight()
             case '3':
                 print("the monster seems to be in a very deep sleep and doesnt wake up while you escape")
                 self.navigate()
 
     def bossfight(self):
-        print("bossfight here")
-        print('after defeating the boss you return to the cave entrance')
-        self.locations['cave entrance']= [['the cave you have been in seems to be blocked by rocks'],
-                                          ["North Path", "South Path"]]
-        self.navigate()
+        enemies = enemyLib("monsters.txt")
+        boss = random.choice(enemies)
+        while player.isAlive() & boss.isAlive():
+            print(f"{Fore.LIGHTRED_EX}you attack", boss.species)
+            player.attack(boss)
+            boss.showHP()
+            if boss.health < 1:
+                print(f"{Fore.BLUE}you defeated", boss.species)
+                print(f"{Fore.BLUE}you have {player.health} hp")
+                pygame.mixer.Sound("victory.mp3").play()
+                player.Getexp(boss.exp)
+                player.loot_enemy()
+                print(f"{Fore.CYAN}Do you want to use a health potion? (Y/N): ")
+                choice = input().lower()
+                if choice == "y":
+                    player.use_health_potion()
+                break
+            print(boss.species, f"{Fore.RED} attacks you")
+            player.showHP()
+            boss.attack(player)
+
+        if not player.isAlive():
+            print(f"{Fore.RED}Game Over! You have been defeated.")
+            pygame.mixer.Sound("death.wav").play()
+        else:
+            print('after defeating the boss you return to the cave entrance')
+            del self.locations["Cave Entrance"]
+            self.locations['ruined cave entrance'] = [['the cave you have been in seems to be blocked by rocks'],
+                                                      ["North Path", "South Path"]]
+            self.current_location = 'ruined cave entrance'
+            self.navigate()
 
     def river(self):
         print("river")
