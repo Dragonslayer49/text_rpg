@@ -6,10 +6,10 @@ class Enemy:
         self.attackPower = int(attackPower)
 
     def takeDamage(self, damage):
-        self.health -= damage
+        self.health -= max(0, damage)
 
     def showHP(self):
-        print(f"{Fore.RED} {self.species} has: {self.health} HP left {Style.RESET_ALL}")
+        print(f"{Fore.BLUE} {self.species} has: {self.health} HP left {Style.RESET_ALL}")
 
     def attack(self, player):
         player.takeDamage(self.attackPower)

@@ -119,9 +119,10 @@ class StartingArea:
             player.attack(enemy)
             enemy.showHP()
             if enemy.health < 1:
-                print(f"{Fore.YELLOW}you defeated", enemy.species)
+                print(f"{Fore.BLUE}you defeated", enemy.species)
+                print(f"{Fore.BLUE}you have {player.health} hp")
                 player.loot_enemy()
-                print(f"{Fore.YELLOW}Do you want to use a health potion? (Y/N): ")
+                print(f"{Fore.CYAN}Do you want to use a health potion? (Y/N): ")
                 choice = input().lower()
                 if choice == "y":
                     player.use_health_potion()
