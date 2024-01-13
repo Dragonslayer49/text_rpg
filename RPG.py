@@ -4,8 +4,6 @@ import Enemy
 from colorama import init, Fore
 
 
-
-
 def enemyLib(filename):
     enemies = []
     with open(filename, 'r') as file:
