@@ -1,9 +1,11 @@
 import random
 from colorama import Fore, Style
 import pygame
-#from rich.console import Console
+
+# from rich.console import Console
 
 pygame.init()
+
 
 class Character:
     def __init__(self, name, characterClass):
@@ -116,7 +118,6 @@ class Character:
                 self.ask_equip_armor(new_armor)
         else:
             print(f"{Fore.GREEN}You didn't find any loot this time.")
-
 
     def loot_item(self, item_type):
         items = {
