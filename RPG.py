@@ -11,13 +11,9 @@ def enemyLib(filename):
     with open(filename, 'r') as file:
         lines = file.readlines()
         for line in lines:
-            parts = line.strip().split(',')
-            if len(parts) == 3:
-                species, health, attackPower = parts
-                enemy = Enemy.Enemy(species, health, attackPower)
-                enemies.append(enemy)
-            else:
-                print(f"Ignoring invalid line: {line}")
+            species, health, attackPower = line.strip().split(',')
+            enemy = Enemy.Enemy(species, health, attackPower)
+            enemies.append(enemy)
     return enemies
 
 
@@ -33,15 +29,10 @@ class StartingArea:
         self.locations = {
             "Entrance": [['You find yourself at the entrance of the forest, there are two paths before you'],
                          ["North Path", "South Path"]],
-            "North Path": [['while walking through the path you see a abandoned cave entrance'],
-                           ["Entrance", "Cave Entrance"]],
+            "North Path": [['while walking through the path you see a abandoned cave entrance'], ["Entrance", "Cave "
+                                                                                                              "Entrance"]],
             "South Path": [['you spot a river while walking through the path'], ["Entrance", "River"]],
-            "Cave Entrance": [['You enter the dark cave, a goblin blocks your way'],
-                              ["North Path", "Fight Goblin", "South Path"]],
-            "Fight Goblin": [['You are in a battle with a goblin'], ["Fight", "Flee"]],
-            "River": [['You reach the river, a bridge is visible in the distance'], ["North Path", "Cross Bridge"]],
-            "Cross Bridge": [['You cross the bridge and find a peaceful meadow'], ["River", "Meadow"]],
-            "Meadow": [['You are in a beautiful meadow'], ["North Path", "South Path"]],
+
         }
         self.tutorial_location = "house"
         self.tutorial_locations = {
@@ -99,7 +90,7 @@ class StartingArea:
 
     def handle_event(self):
         event = random.randint(1, 10)
-        if event > 1:
+        if event > 9:
             self.encounter()
         else:
             print(f"{Fore.BLUE}you walked without problems.")
