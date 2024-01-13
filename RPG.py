@@ -2,9 +2,10 @@ import random
 import Character
 import Enemy
 from colorama import init, Fore
+import pygame
 
 
-
+pygame.init()
 
 def enemyLib(filename):
     enemies = []
@@ -28,6 +29,9 @@ player = Character.Character(name, chosingC)
 
 class StartingArea:
     def __init__(self):
+        pygame.mixer.music.load("background.wav.wav")
+        pygame.mixer.music.set_volume(0.4)
+        pygame.mixer.music.play(-1)
         self.player = player
         self.current_location = "Entrance"
         self.locations = {
@@ -38,10 +42,12 @@ class StartingArea:
             "South Path": [['you spot a river while walking through the path'], ["Entrance", "River"]],
             "Cave Entrance": [['You enter the dark cave, a goblin blocks your way'],
                               ["North Path", "Fight Goblin", "South Path"]],
-            "Fight Goblin": [['You are in a battle with a goblin'], ["Fight", "Flee"]],
+            "Fight Goblin": [['You are in a battle'], ["Fight", "Flee"]],
             "River": [['You reach the river, a bridge is visible in the distance'], ["North Path", "Cross Bridge"]],
             "Cross Bridge": [['You cross the bridge and find a peaceful meadow'], ["River", "Meadow"]],
             "Meadow": [['You are in a beautiful meadow'], ["North Path", "South Path"]],
+            "Fight": [['You are in a battle'], ["Entrance", "River"]],
+            "Flee": [['You wish you would escape a fight'], ["North Path", "SouthPath"]],
         }
         self.tutorial_location = "house"
         self.tutorial_locations = {
@@ -127,6 +133,7 @@ class StartingArea:
             if enemy.health < 1:
                 print(f"{Fore.BLUE}you defeated", enemy.species)
                 print(f"{Fore.BLUE}you have {player.health} hp")
+                pygame.mixer.Sound("victory.mp3").play()
                 player.loot_enemy()
                 print(f"{Fore.CYAN}Do you want to use a health potion? (Y/N): ")
                 choice = input().lower()
@@ -139,6 +146,7 @@ class StartingArea:
 
         if not player.isAlive():
             print(f"{Fore.RED}Game Over! You have been defeated.")
+            pygame.mixer.Sound("death.wav").play()
         else:
             self.navigate()
 

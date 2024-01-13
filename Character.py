@@ -1,9 +1,9 @@
 import random
 from colorama import Fore, Style
-
+import pygame
 #from rich.console import Console
 
-
+pygame.init()
 
 class Character:
     def __init__(self, name, characterClass):
@@ -98,12 +98,13 @@ class Character:
             return
 
         enemy.takeDamage(damage)
+        pygame.mixer.Sound("clash.wav").play()
         print(f"{Fore.LIGHTRED_EX}You attacked with {weapon_type} and dealt {damage} damage!")
 
     def loot_enemy(self):
         loot_chance = random.randint(1, 100)
         if loot_chance <= 50:
-            new_weapon = self.loot_item("weapons")
+            new_weapon = self.loot_item("weapon")
             if new_weapon:
                 self.ask_equip_weapon(new_weapon)
         elif loot_chance <= 80:
@@ -113,9 +114,10 @@ class Character:
         else:
             print(f"{Fore.GREEN}You didn't find any loot this time.")
 
+
     def loot_item(self, item_type):
         items = {
-            "weapons": [
+            "weapon": [
                 {"type": "Sword", "name": "Broad Sword", "attack": 15},
                 {"type": "Wand", "name": "Frost Wand", "attack": 12},
                 {"type": "Bow", "name": "Crossbow", "attack": 14},
@@ -173,6 +175,7 @@ class Character:
         choice = input(f"{Fore.GREEN}Do you want to equip the {new_armor['name']}? (Y/N): ").lower()
         if choice == "y":
             self.equip_armor(new_armor)
+            pygame.mixer.Sound("loot.wav").play()
         else:
             print(f"{Fore.YELLOW}You chose not to equip the new armor.")
 
@@ -189,12 +192,14 @@ class Character:
         choice = input(f"{Fore.BLUE}Do you want to equip the {new_weapon['type']}? (Y/N): ").lower()
         if choice == "y":
             self.equip_weapon(new_weapon)
+            pygame.mixer.Sound("loot.wav").play()
         else:
             print(f"{Fore.YELLOW}You chose not to equip the new weapon.")
 
     def use_health_potion(self):
         if self.inventory["health_potion"] > 0:
             self.health += 20
+            pygame.mixer.Sound("drinking.wav").play()
             self.inventory["health_potion"] -= 1
             print(f"{Fore.YELLOW}You have used a health potion. Current health: {self.health}")
         else:
