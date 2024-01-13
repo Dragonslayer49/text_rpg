@@ -4,7 +4,7 @@ import Enemy
 from colorama import init, Fore
 
 
-# komentarz se jest tu
+
 
 def enemyLib(filename):
     enemies = []
@@ -69,23 +69,20 @@ class StartingArea:
     def navigate(self):
         while player.isAlive():
             available_paths = self.locations[self.current_location][1]
-            print("".join(self.locations[self.current_location][0]))
+            print("\n".join(self.locations[self.current_location][0]))
             print("Available paths:", ", ".join(self.locations[self.current_location][1]))
-            print("")
             print(f"{Fore.BLUE}write Inventory to Check Inventory")
-            print(f"{Fore.YELLOW}q to Quit")
+            print(f"{Fore.YELLOW}q to Quit\n")
             choice = input()
             if choice in available_paths:
                 self.current_location = choice
                 self.handle_event()
-            match choice:
-                case "1":
-                    self.walk()
-                case "Inventory":
-                    player.show_weapon()
-
-                case "3":
-                    break
+            elif choice == "q":
+                break
+            elif choice == "Inventory" or choice == "i" or choice == "inventory":
+                player.show_weapon()
+            else:
+                print("Invalid")
 
             if not player.isAlive():
                 print(f"{Fore.RED}Game Over! ")
@@ -93,7 +90,7 @@ class StartingArea:
 
     def handle_event(self):
         event = random.randint(1, 10)
-        if event > 0:
+        if event > 9:
             self.encounter()
         else:
             print(f"{Fore.BLUE}you walked without problems.")

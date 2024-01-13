@@ -1,1 +1,1 @@
-goblin,50,8
+goblin,50,11
