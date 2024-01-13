@@ -1,1 +1,14 @@
 goblin,50,11
+ork,70,10
+skeleton,40,13
+dragon,60,13
+troll,55,11
+zombie,55,10
+slime,27,7
+witch,45,13
+spider,35,9
+spectre,55,12
+ghost,50,11
+ogre,55,11
+centaur,60,12
+
