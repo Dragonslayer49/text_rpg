@@ -27,9 +27,11 @@ class StartingArea:
         self.player = player
         self.current_location = "Entrance"
         self.locations = {
-            "Entrance": ["North Path", "South Path"],
-            "North Path": ["Entrance", "Cave Entrance"],
-            "South Path": ["Entrance", "River"],
+            "Entrance": [['You find yourself at the entrance of the forest, there are two paths before you'],
+                         ["North Path", "South Path"]],
+            "North Path": [['while walking through the path you see a abandoned cave entrance'], ["Entrance", "Cave "
+                                                                                                              "Entrance"]],
+            "South Path": [['you spot a river while walking through the path'], ["Entrance", "River"]],
 
         }
         self.tutorial_location = "house"

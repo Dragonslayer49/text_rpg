@@ -1,7 +1,7 @@
 import random
 from colorama import Fore, Style
 
-from rich.console import Console
+#from rich.console import Console
 
 #test
 # masz małego
