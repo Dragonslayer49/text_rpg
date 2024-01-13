@@ -4,8 +4,7 @@ from colorama import Fore, Style
 #from rich.console import Console
 
 
-# test
-# masz małego
+
 class Character:
     def __init__(self, name, characterClass):
         self.name = name
@@ -32,6 +31,10 @@ class Character:
             case "Archer" | "3":
                 self.dexterity = random.randint(8, 12) + 3
                 self.inventory["weapon"] = {"type": "Bow", "attack": 12}
+            case _:
+                self.characterClass = "Knight"
+                self.strength = random.randint(8, 12) + 3
+                self.inventory["weapon"] = {"type": "Sword", "attack": 10}
 
     def showstats(self):
         print(f"Name: {self.name}")
@@ -58,10 +61,7 @@ class Character:
             print(f"{Fore.BLUE}No weapon equipped")
 
         if armor:
-            if "name" in armor:
-                print(f"{Fore.GREEN}Armor: Type: {armor['type']}, Name: {armor['name']} Defense: {armor['defense']}")
-            else:
-                print(f"{Fore.GREEN}Armor: Type: {armor['type']} Defense: {armor['defense']}")
+            print(f"{Fore.GREEN}Armor: Name: {armor['name']} Defense: {armor['defense']}")
         else:
             print(f"{Fore.GREEN}No armor equipped")
 
@@ -103,19 +103,15 @@ class Character:
     def loot_enemy(self):
         loot_chance = random.randint(1, 100)
         if loot_chance <= 50:
-            new_weapon = self.loot_item("weapon")
-            new_armor = self.loot_item("armor")
+            new_weapon = self.loot_item("weapons")
             if new_weapon:
-                print(f"{Fore.LIGHTYELLOW_EX}You found a {new_weapon['type']} with {new_weapon['attack']} attack!")
                 self.ask_equip_weapon(new_weapon)
-            if new_armor:
-                print(
-                    f"{Fore.LIGHTYELLOW_EX}You found armor named {new_armor['name']} with {new_armor['defense']} defense!")
-                self.equip_armor(new_armor)
         elif loot_chance <= 80:
-            self.loot_health_potion()
+            new_armor = self.loot_item("armor")
+            if new_armor:
+                self.ask_equip_armor(new_armor)
         else:
-            print(f"{Fore.GREEN}You didn't find any loot this time")
+            print(f"{Fore.GREEN}You didn't find any loot this time.")
 
     def loot_item(self, item_type):
         items = {
@@ -135,11 +131,11 @@ class Character:
             ],
 
             "armor": [
-                {"name": "Leather Armor", "defense": 5},
-                {"name": "Stone Armor", "defense": 8},
-                {"name": "Plate Armor", "defense": 12},
-                {"name": "Chainmail", "defense": 14},
-                {"name": "Steel Plate", "defense": 12}
+                {"name": "Leather Armor", "defense": 1},
+                {"name": "Stone Armor", "defense": 2},
+                {"name": "Plate Armor", "defense": 3},
+                {"name": "Chainmail", "defense": 4},
+                {"name": "Steel Plate", "defense": 5}
 
             ],
         }
@@ -147,14 +143,8 @@ class Character:
         chosen_item_list = items.get(item_type, [])
         if chosen_item_list:
             chosen_item = random.choice(chosen_item_list)
-            if item_type == "weapons":
-                print(
-                    f"{Fore.YELLOW}You found a {chosen_item['type']} named {chosen_item['name']} with {chosen_item['attack']} attack!")
-            elif item_type == "armor":
-                print(f"{Fore.YELLOW}You found {chosen_item['name']} with {chosen_item['defense']} defense!")
             return chosen_item
         else:
-            print(f"{Fore.YELLOW}No {item_type} found.")
             return None
 
     def loot_health_potion(self):
@@ -164,8 +154,12 @@ class Character:
     def add_weapon_to_inventory(self, new_weapon):
         current_weapon = self.inventory["weapon"]
         if current_weapon:
-            print(
-                f"{Fore.LIGHTBLUE_EX}You already have a {current_weapon['type']} named {current_weapon['name']} with {current_weapon['attack']} attack.")
+            if "name" in current_weapon:
+                print(
+                    f"{Fore.LIGHTBLUE_EX}You already have a {current_weapon['type']} named {current_weapon['name']} with {current_weapon['attack']} attack.")
+            else:
+                print(
+                    f"{Fore.LIGHTBLUE_EX}You already have a {current_weapon['type']} with {current_weapon['attack']} attack.")
             choice = input(f"{Fore.LIGHTGREEN_EX}Do you want to keep the old weapon? (Y/N): ").lower()
             if choice == "n":
                 self.equip_weapon(new_weapon)
@@ -174,9 +168,17 @@ class Character:
         else:
             self.equip_weapon(new_weapon)
 
+    def ask_equip_armor(self, new_armor):
+        print(f"{Fore.GREEN}You found armor named {new_armor['name']} with {new_armor['defense']} defense!")
+        choice = input(f"{Fore.GREEN}Do you want to equip the {new_armor['name']}? (Y/N): ").lower()
+        if choice == "y":
+            self.equip_armor(new_armor)
+        else:
+            print(f"{Fore.YELLOW}You chose not to equip the new armor.")
+
     def equip_armor(self, armor):
         self.inventory["armor"] = armor
-        print(f"You have equipped {armor['name']} with {armor['defense']} defense.")
+        print(f"{Fore.GREEN}You have equipped {armor['name']} with {armor['defense']} defense.")
 
     def equip_weapon(self, weapon):
         self.inventory["weapon"] = weapon
@@ -186,7 +188,7 @@ class Character:
         print(f"{Fore.BLUE}You found a {new_weapon['type']} with {new_weapon['attack']} attack!")
         choice = input(f"{Fore.BLUE}Do you want to equip the {new_weapon['type']}? (Y/N): ").lower()
         if choice == "y":
-            self.add_weapon_to_inventory(new_weapon)
+            self.equip_weapon(new_weapon)
         else:
             print(f"{Fore.YELLOW}You chose not to equip the new weapon.")
 

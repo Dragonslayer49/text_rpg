@@ -4,7 +4,7 @@ import Enemy
 from colorama import init, Fore
 
 
-# komentarz se jest tu
+
 
 def enemyLib(filename):
     enemies = []
