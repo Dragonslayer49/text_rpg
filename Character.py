@@ -61,9 +61,9 @@ class Character:
             print(f"{Fore.BLUE}No weapon equipped")
 
         if armor:
-            print(f"{Fore.GREEN}Armor: Name: {armor['name']} Defense: {armor['defense']}")
+            print(f"{Fore.BLUE}Armor: Name: {armor['name']} Defense: {armor['defense']}")
         else:
-            print(f"{Fore.GREEN}No armor equipped")
+            print(f"{Fore.BLUE}No armor equipped")
 
     def Getexp(self, exp):
         self.exp += exp
