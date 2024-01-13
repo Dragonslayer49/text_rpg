@@ -1,25 +1,28 @@
 import random
 import Character
-import Enemy
+from Enemy import Enemy
 from colorama import init, Fore
 import pygame
 
-
 pygame.init()
+
 
 def enemyLib(filename):
     enemies = []
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            parts = line.strip().split(',')
-            if len(parts) == 3:
-                species, health, attackPower = parts
-                enemy = Enemy.Enemy(species, health, attackPower)
+    try:
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                species, health, attackPower, exp = line.strip().split(',')
+                enemy = Enemy(species, health, attackPower, exp)
                 enemies.append(enemy)
-            else:
-                print(f"Ignoring invalid line: {line}")
+    except FileNotFoundError:
+        print(f"{Fore.RED}Error: File '{filename}' not found.")
+    except Exception as e:
+        print(f"{Fore.RED}Error reading '{filename}': {e}")
+
     return enemies
+
 
 
 name = input(f"{Fore.CYAN}write your name:  ")
@@ -40,12 +43,16 @@ class StartingArea:
             "North Path": [['while walking through the path you see a abandoned cave entrance'],
                            ["Entrance", "Cave Entrance"], ["cave seems to emanate with bad energy"]],
             "South Path": [['you spot a river while walking through the path'], ["Entrance", "River"]],
-            "Cave Entrance": [['You enter the dark cave, a goblin blocks your way'],
-                              ["North Path", "Fight Goblin"],
-                              ['goblin looks at you but doesnt seem to attack at least unprovoked']],
+            "Cave Entrance": [['You enter the dark cave'],
+                              ["North Path", "Flower Garden"],
+                              ['the rocks are very beautiful']],
             "River": [['You reach the river, a bridge is visible in the distance'], ["South Path", "Cross Bridge"]],
             "Cross Bridge": [['You cross the bridge and find a peaceful meadow'], ["River", "Meadow"]],
-            "Meadow": [['You are in a beautiful meadow'], ["Entance"], ["meadow is nice"]],
+            "Meadow": [['You are in a beautiful meadow'], ["Entrance"], ["meadow is nice"]],
+            "Flower Garden": [['you enter a beautiful garden'],
+                              ["Meadow", "Cave Entrance"],
+                              ['flowers are everywhere']],
+
         }
         self.tutorial_location = "house"
         self.tutorial_locations = {
@@ -115,6 +122,7 @@ class StartingArea:
                 print(f"{Fore.BLUE}you defeated", enemy.species)
                 print(f"{Fore.BLUE}you have {player.health} hp")
                 pygame.mixer.Sound("victory.mp3").play()
+                player.Getexp(enemy.exp)
                 player.loot_enemy()
                 print(f"{Fore.CYAN}Do you want to use a health potion? (Y/N): ")
                 choice = input().lower()

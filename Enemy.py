@@ -2,11 +2,14 @@ from colorama import Fore, Style
 import pygame
 
 pygame.init()
+
+
 class Enemy:
-    def __init__(self, species, health, attackPower):
+    def __init__(self, species, health, attackPower, exp):
         self.species = species
         self.health = int(health)
         self.attackPower = int(attackPower)
+        self.exp = int(exp)
 
     def takeDamage(self, damage):
         self.health -= max(0, damage)

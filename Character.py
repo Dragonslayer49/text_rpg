@@ -68,6 +68,9 @@ class Character:
     def Getexp(self, exp):
         self.exp += exp
         if self.exp >= 100:
+            self.strength += 2
+            self.dexterity += 2
+            self.inteligence += 3
             print("you leveled up!")
             self.level += 1
             self.exp = 0
