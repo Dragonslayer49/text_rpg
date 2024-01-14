@@ -55,7 +55,9 @@ class StartingArea:
         }
         self.tutorial_location = "house"
         self.tutorial_locations = {
-            "House": ["Forest"]
+            "1":[['You enter a beautiful garden'],
+                ['North'],['you can smell a foul stench coming from walls most likely decomposing bodies\n you see a faint light coming from the North']],
+
         }
 
     def navigate(self):
@@ -149,7 +151,7 @@ class StartingArea:
     def cave(self):
         print("you are walking through the cave until you see a big monster")
         print("the monster seems to be asleep near him you see a chest with gold")
-        print("1-try to sneak past and get the gold\n2-sneak atack the big monster\n3-escape while he still sleeps")
+        print("1-try to sneak past and get the gold\n2-atack the big monster\n3-escape while he still sleeps")
         choice = input()
         match choice:
             case '1':
@@ -159,7 +161,7 @@ class StartingArea:
                 print("big monster wakes up")
                 self.bossfight()
             case '2':
-                print("Monster got hit with your sneak attack")
+                print("Monster wakes up and starts to attack you")
                 self.bossfight()
             case '3':
                 print("the monster seems to be in a very deep sleep and doesnt wake up while you escape")
@@ -191,10 +193,14 @@ class StartingArea:
             print(f"{Fore.RED}Game Over! You have been defeated.")
             pygame.mixer.Sound("death.wav").play()
         else:
-            print('after defeating the boss you return to the cave entrance')
+            print('with monsters death the cave starts shaking\n you manage to run out before its to late')
             del self.locations["Cave Entrance"]
             self.locations['ruined cave entrance'] = [['the cave you have been in seems to be blocked by rocks'],
-                                                      ["North Path", "South Path"]]
+                                                      ["North Path"]]
+            self.locations["North Path"] = [['while walking through the path you see the ruined cave that you have '
+                                             'been to'],
+                                            ["Entrance", "ruined cave entrance"], ["the cave is now just a pile of "
+                                                                                   "rocks"]]
             self.current_location = 'ruined cave entrance'
             self.navigate()
 
