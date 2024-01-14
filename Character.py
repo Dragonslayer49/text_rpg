@@ -1,6 +1,7 @@
 import random
 from colorama import Fore, Style
 import pygame
+import numpy as np
 
 # from rich.console import Console
 
@@ -87,24 +88,27 @@ class Character:
     def showHP(self):
         print(f"You have: {self.health}")
 
-    def attack(self, enemy):
+    def calculate_damage(self, enemy):
         weapon = self.inventory["weapon"]
         weapon_type = weapon["type"]
         weapon_attack = weapon["attack"]
 
+        attribute_value = 0
         if weapon_type == "Sword":
-            damage = 0.2 * (self.strength) * weapon_attack
+            attribute_value = self.strength
         elif weapon_type == "Wand":
-            damage = 0.2 * (self.inteligence) * weapon_attack
+            attribute_value = self.inteligence
         elif weapon_type == "Bow":
-            damage = 0.2 * (self.dexterity) * weapon_attack
-        else:
-            print(f"{Fore.GREEN}Unknown weapon type")
-            return
+            attribute_value = self.dexterity
+
+        damage = np.multiply(np.multiply(0.2, attribute_value), weapon_attack)
 
         enemy.takeDamage(damage)
-        pygame.mixer.Sound("clash.wav").play()
         print(f"{Fore.LIGHTRED_EX}You attacked with {weapon_type} and dealt {damage} damage!")
+
+    def attack(self, enemy):
+        self.calculate_damage(enemy)
+        pygame.mixer.Sound("clash.wav").play()
 
     def loot_enemy(self):
         loot_chance = random.randint(1, 100)

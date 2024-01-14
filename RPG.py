@@ -31,9 +31,9 @@ player = Character.Character(name, chosingC)
 
 class StartingArea:
     def __init__(self):
-        # pygame.mixer.music.load("background.wav.wav")
-        # pygame.mixer.music.set_volume(0.4)
-        # pygame.mixer.music.play(-1)
+        pygame.mixer.music.load("background.wav.wav")
+        pygame.mixer.music.set_volume(0.4)
+        pygame.mixer.music.play(-1)
         self.player = player
         self.current_location = "Entrance"
         self.locations = {
@@ -100,7 +100,7 @@ class StartingArea:
 
     def handle_event(self):
         event = random.randint(1, 10)
-        if event > 9:
+        if event > 1:
             self.encounter()
         else:
             print(f"{Fore.BLUE}you walked without problems.")
