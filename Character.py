@@ -101,7 +101,7 @@ class Character:
         elif weapon_type == "Bow":
             attribute_value = self.dexterity
 
-        damage = np.multiply(np.multiply(0.2, attribute_value), weapon_attack)
+        damage = np.multiply(np.multiply(0.1, attribute_value), weapon_attack)
 
         enemy.takeDamage(damage)
         print(f"{Fore.LIGHTRED_EX}You attacked with {weapon_type} and dealt {damage} damage!")
