@@ -1,7 +1,7 @@
 goblin,60,11,75
 ork,80,10,90
-skeleton,50,13,75
-dragon,110,13,120
+skeleton,50,12,75
+dragon,110,12,120
 troll,65,11,80
 zombie,65,10,70
 slime,37,7,40
@@ -11,3 +11,4 @@ spectre,65,12,85
 ghost,60,11,75
 ogre,65,11,80
 centaur,70,12,100
+topielec,30,15,100
