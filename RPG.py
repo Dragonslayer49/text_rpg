@@ -116,7 +116,7 @@ class StartingArea:
         choice = input()
         if choice == "2":
             success = random.randint(1, 10)
-            if success > 1:  # potem zmienic zeby byla szansa na atak przeciwnika
+            if success > 1:  # potem zmienic zeby byla szansa na atak przeciwnik
                 print(f"{Fore.BLUE}you successfully evaded ", enemy.species)
                 self.navigate()
         elif choice == "1":
