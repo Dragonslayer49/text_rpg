@@ -53,7 +53,7 @@ class Character:
 
     def show_weapon(self):
         weapon = self.inventory["weapon"]
-        armor = self.inventory["armor"]
+        armor = self.inventory["armor"] #d
 
         if weapon:
             if "name" in weapon:
