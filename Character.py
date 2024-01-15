@@ -112,14 +112,18 @@ class Character:
 
     def loot_enemy(self):
         loot_chance = random.randint(1, 100)
-        if loot_chance <= 50:
-            new_weapon = self.loot_item("weapon")
-            if new_weapon:
-                self.ask_equip_weapon(new_weapon)
-        elif loot_chance <= 80:
-            new_armor = self.loot_item("armor")
-            if new_armor:
-                self.ask_equip_armor(new_armor)
+        if loot_chance <= 60:
+            a=random.randint(1, 2)
+            if a==1:
+                new_item = self.loot_item("weapon")
+                if new_item:
+                    self.ask_equip_weapon(new_item)
+            else:
+                new_item = self.loot_item("armor")
+                if new_item:
+                    self.ask_equip_armor(new_item)
+        elif loot_chance >= 80:
+            self.loot_health_potion()
         else:
             print(f"{Fore.GREEN}You didn't find any loot this time.")
 

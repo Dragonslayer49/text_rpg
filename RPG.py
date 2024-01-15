@@ -56,10 +56,10 @@ class StartingArea:
         self.tutorial_location = "Dark Cave"
         self.tutorial_locations = {
             "Dark Cave":[['You find yourself inside a cave to look around press l'],
-                ['Big Room'],['you can smell a foul stench coming from walls most likely decomposing bodies\n you see a faint light coming from the North to navigate between rooms enter the name of the next location/ Big Room']],
-            "Big Room": [['You enter a Big Room'],
+                ['Big Room'],['you can smell a foul stench coming from walls most likely decomposing bodies\n you see a faint light coming from the North\n to navigate between rooms enter the name of the next location/ Big Room']],
+            "Big Room": [['You enter a Big Room\n if you ever dont know what to do enter help '],
                   ['Dark Cave','Small Tunnel'], [
-                      'You can see a small hole on the wall']],
+                      'You can see a small hole on the wall.\n there is something rustling in there']],
             "Small Tunnel": [['You can see the exit'],
                          ['Exit', 'Small Tunnel'], [
                              'You are almost free']],
@@ -70,6 +70,7 @@ class StartingArea:
 
     def navigate(self):
         numerek = 0
+        iloscprob=0
         while player.isAlive():
             if self.current_location == "Cave Entrance":
                 choice = input("would you like to enter this cave? Y/N")
@@ -106,7 +107,11 @@ class StartingArea:
                 print(f"{Fore.YELLOW}to see your health enter hp")
                 print(f"{Fore.RED}q to Quit\n")
             else:
-                print("Invalid")
+                print("invalid")
+                iloscprob+=1
+                if iloscprob>=3:
+                    print('if you dont know what to do write help')
+                    iloscprob=0
 
             if not player.isAlive():
                 print(f"{Fore.RED}Game Over! ")
@@ -127,7 +132,10 @@ class StartingArea:
         print(f"{Fore.BLUE}you see a ", enemy.species, " in the distance")
         print(f"{Fore.YELLOW}1-fight him")
         print(f"{Fore.BLUE}2-try to sneak past")
-        choice = input()
+        choice = 0
+        while choice != "1" and choice != "2":
+            choice = input()
+
         if choice == "2":
             success = random.randint(1, 10)
             if success > 1:  # potem zmienic zeby byla szansa na atak przeciwnik
@@ -159,6 +167,8 @@ class StartingArea:
         if not player.isAlive():
             print(f"{Fore.RED}Game Over! You have been defeated.")
             pygame.mixer.Sound("death.wav").play()
+            exit()
+
         else:
             self.navigate()
 
@@ -206,6 +216,7 @@ class StartingArea:
         if not player.isAlive():
             print(f"{Fore.RED}Game Over! You have been defeated.")
             pygame.mixer.Sound("death.wav").play()
+            exit()
         else:
             print('with monsters death the cave starts shaking\n you manage to run out before its to late')
             del self.locations["Cave Entrance"]
@@ -221,25 +232,27 @@ class StartingArea:
     def river(self):
         print("river")
     def turtorial(self):
-        numerek = 0
+        numerek=0
         while player.isAlive():
-            if self.current_location == "Small Tunnel":
+            if self.tutorial_location == "Small Tunnel":
                 enemies = enemyLib("monsters.txt")
                 enemy = random.choice(enemies)
                 self.fight(enemy)
 
             available_paths = self.tutorial_locations[self.tutorial_location][1]
-            if numerek == 0:
-                print("\n".join(self.tutorial_locations[self.tutorial_location][0]))
-                print("Available paths:", ", ".join(self.tutorial_locations[self.tutorial_location][1]))
-                numerek += 1
+            if numerek==0:
+               print("\n".join(self.tutorial_locations[self.tutorial_location][0]))
+               print("Available paths:", ", ".join(self.tutorial_locations[self.tutorial_location][1]))
+               numerek+=1
+
             choice = input()
             if choice in available_paths:
                 self.tutorial_location = choice
+                numerek=0
             elif choice == "q":
                 break
             elif choice == "l":
-                print(self.tutorial_locations[self.tutorial_location][2])
+                print(str(self.tutorial_locations[self.tutorial_location][2]))
             elif choice == "Inventory" or choice == "i" or choice == "inventory":
                 player.show_weapon()
             elif choice == "stats" or choice == "Stats" or choice == "s":
