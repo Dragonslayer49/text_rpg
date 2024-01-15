@@ -53,7 +53,7 @@ class StartingArea:
                               ['flowers are everywhere']],
 
         }
-        self.tutorial_location = "house"
+        self.tutorial_location = "Dark Cave"
         self.tutorial_locations = {
             "Dark Cave":[['You find yourself inside a cave to look around press l'],
                 ['Big Room'],['you can smell a foul stench coming from walls most likely decomposing bodies\n you see a faint light coming from the North to navigate between rooms enter the name of the next location/ Big Room']],
