@@ -196,7 +196,7 @@ class Character:
         print(f"{Fore.BLUE}You have equipped {weapon['type']}")
 
     def ask_equip_weapon(self, new_weapon):
-        print(f"{Fore.BLUE}You found a {new_weapon['type']} with {new_weapon['attack']} attack!")
+        print(f"{Fore.BLUE}You found a {new_weapon['name']} with {new_weapon['attack']} attack!")
         choice = input(f"{Fore.BLUE}Do you want to equip the {new_weapon['type']}? (Y/N): ").lower()
         if choice == "y":
             self.equip_weapon(new_weapon)

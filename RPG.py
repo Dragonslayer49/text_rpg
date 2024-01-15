@@ -55,8 +55,16 @@ class StartingArea:
         }
         self.tutorial_location = "house"
         self.tutorial_locations = {
-            "1":[['You enter a beautiful garden'],
-                ['North'],['you can smell a foul stench coming from walls most likely decomposing bodies\n you see a faint light coming from the North']],
+            "Dark Cave":[['You find yourself inside a cave to look around press l'],
+                ['Big Room'],['you can smell a foul stench coming from walls most likely decomposing bodies\n you see a faint light coming from the North to navigate between rooms enter the name of the next location/ Big Room']],
+            "Big Room": [['You enter a Big Room'],
+                  ['Dark Cave','Small Tunnel'], [
+                      'You can see a small hole on the wall']],
+            "Small Tunnel": [['You can see the exit'],
+                         ['Exit', 'Small Tunnel'], [
+                             'You are almost free']],
+
+
 
         }
 
@@ -86,10 +94,16 @@ class StartingArea:
                 print(self.locations[self.current_location][2])
             elif choice == "Inventory" or choice == "i" or choice == "inventory":
                 player.show_weapon()
+            elif choice == "stats" or choice == "Stats" or choice == "s":
+                player.showstats()
+            elif choice == "HP" or choice == "hp" or choice == "Hp":
+                player.showHP()
             elif choice == "help":
                 print(f"{Fore.GREEN}To go into any place write the name of the place")
                 print(f"{Fore.BLUE}write Inventory to Check Inventory")
                 print(f"{Fore.YELLOW}to look around or investigate write look or l")
+                print(f"{Fore.YELLOW}to see your stats enter stats")
+                print(f"{Fore.YELLOW}to see your health enter hp")
                 print(f"{Fore.RED}q to Quit\n")
             else:
                 print("Invalid")
@@ -206,34 +220,50 @@ class StartingArea:
 
     def river(self):
         print("river")
+    def turtorial(self):
+        numerek = 0
+        while player.isAlive():
+            if self.current_location == "Small Tunnel":
+                enemies = enemyLib("monsters.txt")
+                enemy = random.choice(enemies)
+                self.fight(enemy)
 
-    def tutorial(self):
-        choice = input(f"{Fore.CYAN}would you like to do a tutorial? Y/N")
-        if choice == "Y":
-            enemies = enemyLib("monsters.txt")
-            enemy = random.choice(enemies)
-            print(f"{Fore.GREEN}You find yourself at a village, You see a smoke in the distance")
-            print(f"{Fore.CYAN}1-check out the smoke")
-            print(f"{Fore.LIGHTGREEN_EX}2-rest at your house")
-            print(f"{Fore.CYAN}3-go to the forest")
+            available_paths = self.tutorial_locations[self.tutorial_location][1]
+            if numerek == 0:
+                print("\n".join(self.tutorial_locations[self.tutorial_location][0]))
+                print("Available paths:", ", ".join(self.tutorial_locations[self.tutorial_location][1]))
+                numerek += 1
             choice = input()
-            match choice:
-                case "1":
-                    print(f"{Fore.GREEN}you see soldiers attacking a nearby village")
-                    print(f"{Fore.GREEN}while you looked at the soldiers one noticed you and started going your way")
-                    print(f"{Fore.RED}1-prepare for battle")
-                    print(f"{Fore.YELLOW}2-run away")
-                    choice = input()
-                    if choice == "1":
-                        self.fight(enemy)
-                case "2":
-                    print(f"{Fore.GREEN}while resting a soldier went into you house with a sword in his hand")
-                case "3":
-                    print()
+            if choice in available_paths:
+                self.tutorial_location = choice
+            elif choice == "q":
+                break
+            elif choice == "l":
+                print(self.tutorial_locations[self.tutorial_location][2])
+            elif choice == "Inventory" or choice == "i" or choice == "inventory":
+                player.show_weapon()
+            elif choice == "stats" or choice == "Stats" or choice == "s":
+                player.showstats()
+            elif choice == "HP" or choice == "hp" or choice == "Hp":
+                player.showHP()
+            elif choice == "help":
+                print(f"{Fore.GREEN}To go into any place write the name of the place")
+                print(f"{Fore.BLUE}write Inventory to Check Inventory")
+                print(f"{Fore.YELLOW}to look around or investigate write look or l")
+                print(f"{Fore.YELLOW}to see your stats enter stats")
+                print(f"{Fore.YELLOW}to see your health enter hp")
+                print(f"{Fore.RED}q to Quit\n")
+            else:
+                print("Invalid")
 
-        else:
-            self.navigate()
+            if not player.isAlive():
+                print(f"{Fore.RED}Game Over! ")
+                break
 
 
 gaming = StartingArea()
-gaming.tutorial()
+choice = input(f"{Fore.CYAN}would you like to do a tutorial? Y/N")
+if choice == "Y":
+    gaming.turtorial()
+else:
+    gaming.navigate()
